@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion
+{% endblock %}
+
+{% block body %}
+	<main class="security-form w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal text-center">Connexion</h1>
+
+        {{ include('partials/_flash_messages.html.twig') }}
+        
+		<form action="{{ path('app_login') }}" method="post">
+			<div class="form-floating">
+				<input type="email"  id="username" name="_username" placeholder="name@example.com" value="{{ last_username }}"
+                class="form-control my-1">
+                <label for="username">Adresse email</label>
+			</div>
+			<div class="form-floating">
+				<input type="password" id="password" name="_password" placeholder="Mot de Passe"
+                class="form-control my-1">
+				<label for="floatingPassword">Mot de Passe</label>
+			</div>
+			<button class="w-100 btn btn-lg btn-success" type="submit">Connexion</button>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+		</form>
+	</main>
+{% endblock %}

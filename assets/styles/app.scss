@@ -1,2 +1,37 @@
 @import "~bootstrap/scss/bootstrap";
 
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flash messages */
+.flash-content {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.success-content {
+    color: darkcyan;
+}
+
+.error-content {
+    color: crimson;
+}
+
+.security-form {
+    max-width: 330px;
+    padding: 15px;
+
+    .form-control:focus {
+        border-color: $teal;
+        box-shadow: 0 0 0 0.25rem rgba(32, 201, 151, 0.25);
+    }
+}

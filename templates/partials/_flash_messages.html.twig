@@ -1,0 +1,7 @@
+{% for label, messages in app.flashes(["error", "success"]) %}
+    {% for message in messages %}
+        <p class="flash-content {{label}}-content">
+            {{message}}
+        </p>
+    {% endfor %}
+{% endfor %}

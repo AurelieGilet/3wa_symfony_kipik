@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+	<main class="security-form w-100 m-auto">
+		<h1 class="h3 mb-3 fw-normal text-center">Inscription</h1>
+		{{ form_start(form) }}
+            <div class="form-floating">
+                {{ form_widget(form.email) }}
+                {{ form_label(form.email) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.plainPassword) }}
+                {{ form_label(form.plainPassword) }}
+            </div>
+                {{ form_row(form.submit) }}
+                {{ form_row(form._token) }}
+		{{ form_end(form) }}
+	</main>	
+{% endblock %}
