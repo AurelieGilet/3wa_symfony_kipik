@@ -5,10 +5,44 @@
 
 {% block body %}
 	<div class="container m-auto">
-		<div class="px-4 py-5 my-5 text-center">
-			<img src="{{ asset('images/website/cactus.svg') }}" alt="Dessin d'un cactus" width="70" height="70" 
-                class="d-block mx-auto mb-4">
+		<div class="py-2 text-center">
+			<img src="{{ asset('images/website/cactus.svg') }}" alt="Dessin d'un cactus" width="70" height="70" class="d-block mx-auto mb-4">
 			<h1 class="display-5 fw-bold text-success">Kipik !</h1>
+		</div>
+		<div>
+			<select class="form-select" aria-label="Catégories de produits">
+				<option selected>Toutes les catégories</option>
+				{% for category in categories %}
+				<option value="{{ category.name }}">{{ category.name|capitalize }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		
+		<div class="album py-5 bg-body-tertiary">
+			<div class="container">
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+					{% for product in products %}
+					<div class="col">
+						<div class="card shadow-sm h-100">
+							<img src="{{ asset('images/products/' ~ product.image) }}" width="100%" height="225" 
+								alt="Photo d'un {{ product.name }}" focusable="false"
+								class="card-img-top">
+							<div class="card-body">
+								<p class="card-text text-center h5">{{ product.name }}</p>
+							</div>
+							<div class="card-footer d-flex justify-content-between align-items-center">
+								<p class="m-0">{{ product.price|number_format(2, ',') }} € </p>
+								{% if product.stock == 0 %}
+									<small class="text-danger">Indisponible</small>
+								{% else %}
+									<small class="text-success">En stock</small>
+								{% endif %}									
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

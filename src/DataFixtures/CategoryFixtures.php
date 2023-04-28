@@ -10,7 +10,7 @@ class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $categories = ['cactus boule', 'cactus cierge', 'cactus à raquettes', 'cactus grimpant', 'cactus bizarre', 'cactus sans épine'];
+        $categories = ['cactus boule', 'cactus cierge', 'cactus à raquettes', 'cactus grimpant', 'cactus sans épine'];
 
         for ($i=0; $i < count($categories); $i++) { 
             $category = new Category();

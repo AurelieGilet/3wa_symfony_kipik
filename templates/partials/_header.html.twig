@@ -1,54 +1,76 @@
 <div class="container">
-	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-		<div class="col-md-3 mb-2 mb-md-0">
+	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-sm-between py-3 mb-4 border-bottom">
+		<div class="col-md-3">
 			<a href="{{ path('app_home') }}" 
 				class="d-inline-flex link-success text-decoration-none">
 				<img src="{{ asset('images/website/cactus.svg') }}" width="50" height="50" alt="Dessin d'un cactus">
 				<span class="fs-4 mx-2 my-auto">Kipic !</span>
 			</a>
 		</div>
-
-		<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-			<li>
-				<a href="{{ path('app_home') }}" 
-					class="nav-link link-success px-2">
-					Home
+		{% if is_granted("ROLE_USER") %}
+		<ul class="nav ">
+			<li class="nav-item">
+				<a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+				class="nav-link dropdown-toggle link-success">
+					Compte
 				</a>
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" href="#">Mes infos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Mes commandes</a>
+					</li>
+					<li>
+						<a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+					</li>
+				</ul>
 			</li>
-			<li>
-				<a href="#" 
-					class="nav-link link-success px-2">
-					Features
-				</a>
-			</li>
-			<li>
-				<a href="#" 
-					class="nav-link link-success px-2">
-					Pricing
-				</a>
-			</li>
-			<li>
-				<a href="#" 
-					class="nav-link link-success px-2">
-					FAQs
-				</a>
-			</li>
-			<li>
-				<a href="#" 
-					class="nav-link link-success px-2">
-					About
-				</a>
-			</li>
-		</ul>
-
-		<div class="col-md-3 text-end">
-			{% if is_granted("ROLE_USER") %}
-                <a href="{{ path('app_logout') }}" class="btn btn-success">Déconnexion</a>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="btn btn-outline-success me-2">Connexion</a>
-				<a href="{{ path('app_register') }}" class="btn btn-success">Inscription</a>
-            {% endif %}
-			
+		</ul>  
+		{% else %}
+		<div class="col-12 col-sm-6 text-center text-sm-end">
+			<a href="{{ path('app_login') }}" class="btn btn-outline-success me-2">Connexion</a>
+			<a href="{{ path('app_register') }}" class="btn btn-success">Inscription</a>
 		</div>
+		{% endif %}
 	</header>
 </div>
+
+{# <nav class="navbar navbar-expand-md border-bottom">
+	<div class="container">
+		<a href="/" class="d-flex align-items-center mb-3 mb-sm-0 me-ms-auto link-success text-decoration-none">
+			<img src="{{ asset('images/website/cactus.svg') }}" width="50" height="50" alt="Dessin d'un cactus">
+			<span class="fs-4 mx-2 my-auto">Kipic !</span>
+		</a>
+
+		<ul class="nav">
+			{% if is_granted("ROLE_USER") %}
+				<li class="nav-item dropdown">
+					<a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+					class="nav-link dropdown-toggle link-success">
+						Compte
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="dropdown-item" href="#">Mes infos</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">Mes commandes</a>
+						</li>
+						<li>
+							<a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+						</li>
+					</ul>
+				</li>
+			{% else %}
+				<li class="nav-item">
+					<a href="{{ path('app_login') }}" class="btn btn-outline-success me-2">Connexion</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{ path('app_register') }}" class="btn btn-success">Inscription</a>
+				</li>
+			{% endif %}
+		</ul>
+
+	</div>
+</nav> #}
