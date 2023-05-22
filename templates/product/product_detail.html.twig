@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du produit
+{% endblock %}
+
+{% block body %}
+
+	<div class="container m-auto">
+		{{ include('partials/_hero.html.twig') }}
+
+		<div class="container mt-4">
+			<div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="product-img">
+                            <img src="{{ asset('images/products/' ~ product.image) }}" alt="Photo d'un {{ product.name|capitalize }}" focusable="false">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-success">
+                            {{ product.name|capitalize }}
+                        </h4>
+                        <p>
+                            {{ product.description|nl2br }}
+                        </p>
+                        <div class="product_meta">
+                            <span class="d-block my-2">
+                                <strong>Catégorie :</strong>
+                                <a rel="tag" href="{{ path('app_filter_category' , {'name': product.category.name}) }}"
+                                class="link-success">
+                                    {{ product.category.name|capitalize }}
+                                </a>
+                            </span>
+                            <span class="d-block my-2">
+                                <strong>Disponibilité :</strong>
+                                {% if product.stock == 0 %}
+									<span class="text-danger">Indisponible</span>
+								{% elseif  product.stock <= 3 %}
+									<span class="text-danger">Plus que {{product.stock}} en stock !</span>
+								{% elseif product.stock >= 4 %}
+									<span class="text-success">Encore {{product.stock}} exemplaires</span>
+								{% endif %}
+                            </span>
+                        </div>
+                        <div class="mb-3 fs-5">
+                            <strong>Prix :</strong>
+                            {# <span class="text-decoration-line-through px-2">$544</span> #}
+                            <span class="px-2">{{ product.price|number_format(2, ',') }} €</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantité</label>
+                            <input type="number" placeholder="1" min="1" max="{{product.stock}}"
+                            class="form-control quantity"
+                            {% if product.stock == 0 %}disabled{% endif %}>
+                        </div>
+                        {% if product.stock == 0 %}
+                            <button class="btn btn-round btn-danger mt-2 disabled" type="button">
+                                Indisponible
+                            </button>
+                        {% else %}
+                            <button class="btn btn-round btn-success mt-2" type="button">
+                                Ajouter au panier
+                            </button>
+                        {% endif %}	
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

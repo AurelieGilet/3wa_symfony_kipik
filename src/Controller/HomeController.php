@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoryRepository;
+use App\Entity\Category;
 use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -20,6 +21,26 @@ class HomeController extends AbstractController
     
         return $this->render('home/index.html.twig', [
             'categories' => $categories,
+            'products' => $products,
+        ]);
+    }
+
+    #[Route('/categorie/{name}', name: 'app_filter_category')]
+    public function filterProducts(
+        Category $category,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository
+    ): Response
+    {
+        $categories = $categoryRepository->findAll();
+
+        $products = $productRepository->findByCategory($category);
+
+        dump($category);
+
+        return $this->render('home/index.html.twig', [
+            'categories' => $categories,
+            'currentCategory' => $category,
             'products' => $products,
         ]);
     }

@@ -26,6 +26,13 @@ img {
     right: 0;
 }
 
+.cart {
+    &:hover {
+        background-color: rgba(32, 201, 151, 0.15);
+        color: $success;
+    }
+}
+
 /* Flash messages */
 .flash-content {
     width: 100%;
@@ -52,10 +59,31 @@ img {
     }
 }
 
-// Home categories selector
-.form-select {
-    &:focus {
-        border-color: $teal;;
-        box-shadow: 0 0 0 0.25rem rgba(32, 201, 151, 0.25);
+// Home 
+.products-list {
+    & .card {
+        text-decoration: none;
+        color: $success;
+
+        &:hover {
+            color: $success;
+            border-color: $green;
+        }
     }
+}
+
+// Product detail 
+.product-img img {
+    width: 100%;
+}
+
+.product_meta {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    margin: 15px 0;
+}
+
+.quantity {
+    width: 120px;
 }

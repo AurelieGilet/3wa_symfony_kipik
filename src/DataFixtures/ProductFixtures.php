@@ -29,7 +29,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 3.20,
                 'description' => 'Plante sphérique aplatie, au corps vert démuni d\'épines. Abondante floraison blanche. Une espèce indispensable !',
                 'image' => 'echinopsis_subdenudata.jpg',
-                'stock' => 10,
+                'stock' => 0,
             ],
             1 => [
                 'category' => $categories[0],
@@ -37,7 +37,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 3.20,
                 'description' => 'Le classique "Coussin de belle-mère". Cette plante sphérique aplatie, hérissée de fortes épines jaunes, devient énorme ! Sans aucun doute un des plus beaux cactus.',
                 'image' => 'echinocactus_grusonii.jpg',
-                'stock' => 10,
+                'stock' => 3,
             ],
             2 => [
                 'category' => $categories[0],
@@ -70,7 +70,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 9.00,
                 'description' => 'Cierge aux tiges assez souples, portant de fines épines jaune pâle, finissant par former une touffe largement étalée. Abondante floraison rouge pendant l\'été. Croissance très vigoureuse !',
                 'image' => 'cleistocactus_samaipatanus.jpg',
-                'stock' => 10,
+                'stock' => 0,
             ],
             6 => [
                 'category' => $categories[1],
@@ -78,7 +78,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 3.20,
                 'description' => 'Une jolie plante atteignant environ 2 mètres, formant des touffes par division de la base, plus rarement par ramification. Dense toison de fines épines et de poils blancs, nombreuses fleurs tubulaires carmin à partir d\'une dizaine d\'années. Demande des arrosages abondants en été.',
                 'image' => 'cleistocactus_strausii.jpg',
-                'stock' => 10,
+                'stock' => 2,
             ],
             7 => [
                 'category' => $categories[1],
@@ -111,7 +111,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 4.00,
                 'description' => 'Le "Figuier de Barbarie" peut dépasser 2 mètres de hauteur. Il possède de gros articles ovales, inermes, atteignant 40 cm. Ses fleurs jaunes au mois de mai sont suivies de gros fruits jaunes comestibles, venant à maturité en fin d\'été. Cette espèce est probablement un hybride sélectionné par les amérindiens bien avant la découverte du Nouveau Monde.',
                 'image' => 'opuntia_ficus-indica.jpg',
-                'stock' => 10,
+                'stock' => 0,
             ],
             11 => [
                 'category' => $categories[2],
@@ -119,7 +119,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 9.00,
                 'description' => 'Sorte d\'Opuntia aux raquettes extrêmement allongées. Épiderme gris-vert, ou brunâtre au soleil, surface finement divisée en petits mamelons, petites fleurs jaune orangé.',
                 'image' => 'consolea_moniliformis.jpg',
-                'stock' => 10,
+                'stock' => 1,
             ],
             12 => [
                 'category' => $categories[2],
@@ -152,7 +152,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 6.00,
                 'description' => 'Cierge-liane aux tiges triangulaires très larges, vert clair, de croissance très rapide. Énormes fleurs blanches en été ! C\'est la plante qui fournit les "fruits du Dragon" rouges à pulpe blanche, très prisés en Asie.',
                 'image' => 'hylocereus_undatus.jpg',
-                'stock' => 10,
+                'stock' => 0,
             ],
             16 => [
                 'category' => $categories[3],
@@ -160,7 +160,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'price' => 6.00,
                 'description' => 'Cierge grimpant aux tiges vert violacé, atteignant jusqu\'à 5 cm de diamètre, avec des épines très courtes. Très grande fleur blanche (Ø 30 cm), extérieur brun-rouge, avec des écailles et des soies blanches, non odorante, pendant les nuits d\'été.',
                 'image' => 'selenicereus_pteranthus.jpg',
-                'stock' => 10,
+                'stock' => 5,
             ],
             17 => [
                 'category' => $categories[3],

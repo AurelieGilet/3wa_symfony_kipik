@@ -1,44 +1,62 @@
+{% set route_name = app.request.attributes.get('_route') %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}Kipik !
 {% endblock %}
 
 {% block body %}
 	<div class="container m-auto">
-		<div class="py-2 text-center">
-			<img src="{{ asset('images/website/cactus.svg') }}" alt="Dessin d'un cactus" width="70" height="70" class="d-block mx-auto mb-4">
-			<h1 class="display-5 fw-bold text-success">Kipik !</h1>
-		</div>
-		<div>
-			<select class="form-select" aria-label="Catégories de produits">
-				<option selected>Toutes les catégories</option>
-				{% for category in categories %}
-				<option value="{{ category.name }}">{{ category.name|capitalize }}</option>
-				{% endfor %}
-			</select>
+		{{ include('partials/_hero.html.twig') }}
+
+		<div class="d-flex align-items-center mt-4">
+			<div class="dropdown">
+				<button id="categories" type="button" data-bs-toggle="dropdown" aria-expanded="false" 
+				class="btn btn-success dropdown-toggle">
+				Filtrer par catégorie
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="categories">
+					<li>
+						<a class="dropdown-item" href="{{ path('app_home') }}">Toutes les catégories</a>
+					</li>
+					{% for category in categories %}
+						<li>
+							<a class="dropdown-item" href="{{ path('app_filter_category' , {'name': category.name}) }}">
+								{{ category.name|capitalize }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% if route_name == 'app_filter_category' %}
+				<p class="text-success fs-3 fw-bold ms-4 mb-0">Les {{ currentCategory.name|capitalize }}</p>
+			{% endif %}
 		</div>
 		
-		<div class="album py-5 bg-body-tertiary">
+		<div class="products-list py-5">
 			<div class="container">
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 					{% for product in products %}
 					<div class="col">
-						<div class="card shadow-sm h-100">
+						<a href="{{ path('app_product_detail', {'name': product.name}) }}"
+						class="card shadow-sm h-100">
 							<img src="{{ asset('images/products/' ~ product.image) }}" width="100%" height="225" 
-								alt="Photo d'un {{ product.name }}" focusable="false"
+								alt="Photo d'un {{ product.name|capitalize }}" focusable="false"
 								class="card-img-top">
 							<div class="card-body">
-								<p class="card-text text-center h5">{{ product.name }}</p>
+								<p class="card-text text-center h5">{{ product.name|capitalize }}</p>
 							</div>
 							<div class="card-footer d-flex justify-content-between align-items-center">
-								<p class="m-0">{{ product.price|number_format(2, ',') }} € </p>
 								{% if product.stock == 0 %}
 									<small class="text-danger">Indisponible</small>
+								{% elseif  product.stock <= 3 %}
+									<small class="text-danger">Plus que {{product.stock}} !</small>
 								{% else %}
 									<small class="text-success">En stock</small>
-								{% endif %}									
+								{% endif %}		
+								<p class="m-0">{{ product.price|number_format(2, ',') }} € </p>							
 							</div>
-						</div>
+						</a>
 					</div>
 					{% endfor %}
 				</div>
