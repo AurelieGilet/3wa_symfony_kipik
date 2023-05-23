@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<div class="container m-auto">
+    <h2 class="text-center my-4">Mes informations</h2>
+
+    <div class="col-12">
+        <div class="border-bottom mt-3">
+            <p class="h5">Adresse email</p>
+            <div class="d-flex justify-content-between">
+                <p>{{app.user.email}}</p>
+                <a href="">Modifier</a>
+            </div>
+        </div>
+        <div class="border-bottom mt-3">
+            <p class="h5">Mot de passe</p>
+            <div class="d-flex justify-content-between">
+                <p>***********</p>
+                <a href="">Modifier</a>
+            </div>
+        </div>
+
+        {% if userType.type is same as('admin') %}
+        <div class="border-bottom mt-3">
+            <p class="h5">Alias</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p>{{app.user.alias}}</p>
+                </div>
+                <a href="">Modifier</a>
+            </div>
+        </div>
+
+        {% elseif userType.type is same as('client') %}
+        <div class="border-bottom mt-3">
+            <p class="h5">Nom et prénom</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p>{{app.user.firstname|capitalize}} {{app.user.lastname|capitalize}}</p>
+                </div>
+                <a href="">Modifier</a>
+            </div>
+        </div>
+        <div class="border-bottom mt-3">
+            <p class="h5">Adresse</p>
+            <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex flex-column">
+                    <span>{{app.user.address.street}}</span>
+                    <span>{{app.user.address.zip}}</span>
+                    <span>{{app.user.address.city}}</span>
+                </div>
+                <a href="" class="align-self-end">Modifier</a>
+            </div>
+        </div>
+        <div class="border-bottom mt-3">
+            <p class="h5">Portemonaie</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p>Solde : {{app.user.wallet.amount}} €</p>
+                </div>
+                <a href="">Créditer</a>
+            </div>
+        </div>
+
+        {% elseif userType.type is same as('user') %}
+            <div class="my-5 mx-auto">
+                <p>Pour pouvoir passer commande, vous devez compléter votre inscription.</p>
+                <p>Merci de remplir ce <a href="{{ path('app_client_register') }}">formulaire</a>.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+</div>
+{% endblock %}

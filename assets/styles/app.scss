@@ -16,7 +16,8 @@ img {
 }
 
 // header/nav
-.dropdown-item:hover, .dropdown-item:focus {
+.dropdown-item:hover,
+.dropdown-item:focus {
     color: var(--bs-dropdown-link-hover-color);
     background-color: rgba(32, 201, 151, 0.15);
 }
@@ -59,7 +60,7 @@ img {
     }
 }
 
-// Home 
+// Home
 .products-list {
     & .card {
         text-decoration: none;
@@ -72,7 +73,7 @@ img {
     }
 }
 
-// Product detail 
+// Product detail
 .product-img img {
     width: 100%;
 }

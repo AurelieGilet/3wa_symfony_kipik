@@ -42,7 +42,7 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Product[]
      */
-    public function findByCategory($category)
+    public function findByCategory($category): array
     {
         return $this->createQueryBuilder('product')
             ->andWhere('product.category = :category')

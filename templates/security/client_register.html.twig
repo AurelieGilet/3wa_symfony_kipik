@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enregistrement client{% endblock %}
+
+{% block body %}
+	<main class="security-form w-100 m-auto">
+		<h1 class="h3 mb-3 fw-normal text-center">Finalisation de l'inscription</h1>
+		{{ form_start(form) }}
+            <div class="form-floating">
+                {{ form_widget(form.firstname) }}
+                {{ form_label(form.firstname) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.lastname) }}
+                {{ form_label(form.lastname) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.address.street) }}
+                {{ form_label(form.address.street) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.address.zip) }}
+                {{ form_label(form.address.zip) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.address.city) }}
+                {{ form_label(form.address.city) }}
+            </div>
+                {{ form_row(form.submit) }}
+                {{ form_row(form._token) }}
+		{{ form_end(form) }}
+	</main>	
+{% endblock %}
