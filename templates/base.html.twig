@@ -14,10 +14,12 @@
         {% endblock %}
     </head>
     <body>
-        {{ include('partials/_header.html.twig') }}
-
-        {% block body %}{% endblock %}
-
-        {{ include('partials/_footer.html.twig') }}
+        <div class="main">
+            {{ include('partials/_header.html.twig') }}
+    
+            {% block body %}{% endblock %}
+    
+            {{ include('partials/_footer.html.twig') }}
+        </div>
     </body>
 </html>

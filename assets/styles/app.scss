@@ -7,8 +7,12 @@ html {
 
 body {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+}
+
+.main {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
 }
 
 img {
