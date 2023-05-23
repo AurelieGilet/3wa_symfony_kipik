@@ -14,8 +14,10 @@ class UserInterfaceController extends AbstractController
     {
         $userType = $userRepository->getUserType($this->getUser());
 
+        $userType = $userType[0]['type'];
+
         return $this->render('user_interface/account.html.twig', [
-            'userType' => $userType[0],
+            'userType' => $userType,
         ]);
     }
 

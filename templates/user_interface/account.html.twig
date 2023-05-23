@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        {% if userType.type is same as('admin') %}
+        {% if userType is same as('admin') %}
         <div class="border-bottom mt-3">
             <p class="h5">Alias</p>
             <div class="d-flex justify-content-between">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        {% elseif userType.type is same as('client') %}
+        {% elseif userType is same as('client') %}
         <div class="border-bottom mt-3">
             <p class="h5">Nom et prénom</p>
             <div class="d-flex justify-content-between">
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        {% elseif userType.type is same as('user') %}
+        {% elseif userType is same as('user') %}
             <div class="my-5 mx-auto">
                 <p>Pour pouvoir passer commande, vous devez compléter votre inscription.</p>
                 <p>Merci de remplir ce <a href="{{ path('app_client_register') }}">formulaire</a>.</p>
