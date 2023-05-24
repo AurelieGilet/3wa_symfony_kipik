@@ -34,8 +34,6 @@ class CartController extends AbstractController
             $total += $totalItem;
         }
 
-        dump($cartWidthData);
-
         return $this->render('cart/index.html.twig', [
             'cart' => $cartWidthData,
             'total' => $total,
@@ -72,10 +70,9 @@ class CartController extends AbstractController
             $cart[$product->getId()] = 1;
         }
 
-        $session->set('cart', $cart);
-
-        dd($session->get('cart'));
+        $session->set('cart', $cart); 
         
+        $this->addFlash('success', "Produit ajouté au panier !");
 
         return $this->redirectToRoute('app_product_detail', ['name' => $product->getName() ]);
     }
