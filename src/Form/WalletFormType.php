@@ -6,18 +6,17 @@ use App\Entity\Wallet;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class WalletFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('amountToCredit', NumberType::class, [
+            ->add('amountToCredit', IntegerType::class, [
                 'label' => "Montant à créditer *",
-                'attr' => ['placeholder' => "42", 'class' => "form-control my-1"],
-                'scale' => 2,
+                'attr' => ['placeholder' => "42", 'class' => "form-control my-1", 'min' => 1],
                 'required' => true,
                 'mapped' => false,
             ])

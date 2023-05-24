@@ -1,0 +1,21 @@
+<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h2 class="modal-title h-5" id="exampleModalLabel">Créditer mon portefeuille</h2>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			{{ form_start(form) }}
+            <div class="form-floating">
+                {{ form_widget(form.amountToCredit) }}
+                {{ form_label(form.amountToCredit) }}
+            </div>
+                {{ form_row(form.submit) }}
+                {{ form_row(form._token) }}
+		    {{ form_end(form, {render_rest: false}) }}
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+		</div>
+	</div>
+</div>

@@ -24,7 +24,7 @@ class Client extends User
     private ?Wallet $wallet = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Address $address = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Order::class)]

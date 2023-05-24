@@ -8,7 +8,6 @@ use App\Entity\Wallet;
 use App\Form\RegistrationFormType;
 use App\Form\ClientRegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,23 +30,31 @@ class SecurityController extends AbstractController
     #[Route('/inscription', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $client = new Client();
+        $wallet = new Wallet();
+
+        $form = $this->createForm(RegistrationFormType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $wallet->setAmount(100);
+
+            $this->em->persist($wallet);
+
             // encode the plain password
-            $user->setPassword(
+            $client->setPassword(
                 $userPasswordHasher->hashPassword(
-                    $user,
+                    $client,
                     $form->get('plainPassword')->getData()
                 )
             );
 
-            $user->setRoles(['ROLE_USER']);
-            $user->setCreatedAt(new \DateTimeImmutable());
+            $client->setRoles(['ROLE_USER']);
+            $client->setCreatedAt(new \DateTimeImmutable());
+            $client->setWallet($wallet);
+            $client->setIsFullyRegistered(false);
 
-            $this->em->persist($user);
+            $this->em->persist($client);
             $this->em->flush();
 
             $this->addFlash('success', "Votre compte a bien été créé");
@@ -61,44 +68,23 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/utilisateur/enregistrement', name: 'app_client_register')]
-    public function clientRegister(Request $request, Security $security): Response
+    public function clientRegister(Request $request): Response
     {
-        $user = $this->getUser();
-        $userEmail = $user->getEmail();
-        $userPassword = $user->getPassword();
-        $userCreatedAt = $user->GetCreatedAt();
-        $client = new Client();
-        $wallet = new Wallet();
+        $client = $this->getUser();
 
         $form = $this->createForm(ClientRegistrationFormType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->remove($user);
-            
-            $this->em->flush();
-
-            $wallet->setAmount(100);
-
-            $this->em->persist($wallet);
-
-            $client->setEmail($userEmail);
-            $client->setPassword($userPassword);
-            $client->setCreatedAt($userCreatedAt);
-            $client->setRoles(['ROLE_USER']);
-            $client->setWallet($wallet);
             $client->setIsFullyRegistered(true);
 
             $this->em->persist($client);
 
             $this->em->flush();
 
-            $request->getSession()->invalidate();
-            $this->container->get('security.token_storage')->setToken(null);
+            $this->addFlash('success', "Votre inscription a bien été finalisée");
 
-            $this->addFlash('success', "Votre inscription a bien été finalisée, veuillez vous identifier à nouveau");
-
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_user_interface');
         }
 
         return $this->render('security/client_register.html.twig', [

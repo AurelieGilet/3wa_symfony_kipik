@@ -23,6 +23,7 @@ class CartController extends AbstractController
     #[Route('/panier/ajouter/{id}', name: 'app_cart_add')]
     public function addToCart(Product $product, CartService $cartService, UserRepository $userRepository)
     {
+        // TODO : Move those checks to the OrderController (when done)
         // Make sure user is authenticated
         $user = $this->getUser();
 
@@ -35,10 +36,10 @@ class CartController extends AbstractController
         // Make sure user is a client
         $userType = $userRepository->getUserType($this->getUser());
 
-        if ($userType[0]['type'] !== 'client') {
-            $this->addFlash('error', "Vous devez finaliser votre inscription pour pouvoir commander");
+        if ($userType[0]['type'] === 'admin') {
+            $this->addFlash('error', "Un compte administrateur ne peux pas passer de commande");
 
-            return $this->redirectToRoute('app_client_register');
+            return $this->redirectToRoute('app_product_detail', ['name' => $product->getName() ]);
         }
 
         // Add product to cart

@@ -4,7 +4,9 @@
 
 {% block body %}
 <div class="container">
-    <h2 class="text-center my-4">Mes informations</h2>
+    <h1 class="text-center my-4">Mes informations</h1 >
+
+    {{ include('partials/_flash_messages.html.twig') }}
 
     <div class="col-12">
         <div class="border-bottom mt-3">
@@ -33,7 +35,7 @@
             </div>
         </div>
 
-        {% elseif userType is same as('client') %}
+        {% elseif (userType is same as('client')) and (app.user.isFullyRegistered) %}
         <div class="border-bottom mt-3">
             <p class="h5">Nom et prénom</p>
             <div class="d-flex justify-content-between">
@@ -60,11 +62,13 @@
                 <div>
                     <p>Solde : {{app.user.wallet.amount}} €</p>
                 </div>
-                <a href="">Créditer</a>
+                <span data-bs-toggle="modal" data-bs-target="#walletFormModal"  class="link-success text-decoration-underline" role='button' >
+                    Créditer
+                </span>
             </div>
         </div>
 
-        {% elseif userType is same as('user') %}
+        {% elseif (userType is same as('client')) and (not app.user.isFullyRegistered) %}
             <div class="my-5 mx-auto">
                 <p>Pour pouvoir passer commande, vous devez compléter votre inscription.</p>
                 <p>Merci de remplir ce <a href="{{ path('app_client_register') }}">formulaire</a>.</p>
@@ -72,5 +76,10 @@
         {% endif %}
     </div>
     
+    <div id="walletFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        {{ render(controller(
+            'App\\Controller\\UserInterfaceController::addCredit'
+        ))}}
+    </div>
 </div>
 {% endblock %}
