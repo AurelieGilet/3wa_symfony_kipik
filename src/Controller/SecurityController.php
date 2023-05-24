@@ -93,7 +93,8 @@ class SecurityController extends AbstractController
 
             $this->em->flush();
 
-            $security->logout();
+            $request->getSession()->invalidate();
+            $this->container->get('security.token_storage')->setToken(null);
 
             $this->addFlash('success', "Votre inscription a bien été finalisée, veuillez vous identifier à nouveau");
 
