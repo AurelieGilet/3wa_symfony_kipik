@@ -35,7 +35,7 @@
 			{% endif %}
 			<a href="{{ path('app_cart') }}" class="cart btn btn-outline-success">
 				<img src="{{ asset('images/website/cart.svg') }}" width="30" height="30" alt="Dessin d'un cactus" class="align-middle">
-				<span class="cart__items align-middle fs-5">0</span>
+				<span class="cart__items align-middle fs-5">{{ cartService.getCartTotalItems }}</span>
 			</a>
 		</div>
 	</header>
