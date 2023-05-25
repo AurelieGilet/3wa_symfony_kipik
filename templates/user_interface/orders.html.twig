@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center my-4">Mes commandes</h1>
+
+    {{ include('partials/_flash_messages.html.twig') }}
+
+    {% for order in orders %}
+    <div class="container">
+        <!-- Title -->
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h2 class="h5 mb-0">Commande #{{ order.id }}</h2>
+        </div>
+
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Details -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>
+                                <span class="me-3">{{ order.createdAt|date("d-m-Y") }}</span>
+                            </div>
+                        </div>
+                        <table class="table table-borderless">
+                            <tbody>
+                                {% for detail in order.orderDetails %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex mb-2">
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ asset('images/products/' ~ detail.image) }}" 
+                                                    alt="Photo d'un {{ detail.name|capitalize }}" 
+                                                    width="50" class="img-fluid" focusable="false">
+                                            </div>
+                                            <div class="d-flex align-items-center flex-lg-grow-1 ms-3">
+                                                <h6 class="small mb-0">
+                                                    <a href="{{ path('app_product_detail', {'name': detail.name}) }}" class="text-reset">{{ detail.name|capitalize }}</a>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ detail.quantity }}</td>
+                                    <td class="text-end">{{ (detail.price * detail.quantity)|number_format(2, ',') }} €</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">Sous-total</td>
+                                    <td class="text-end">{{ order.amount|number_format(2, ',') }} €</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Frais de port</td>
+                                    <td class="text-end text-uppercase">gratuit</td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td colspan="2">TOTAL</td>
+                                    <td class="text-end">{{ order.amount|number_format(2, ',') }} €</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="h6">Méthode de paiement</h3>
+                        <p>Porte-monaie
+                            <br>
+                            Total: {{ order.amount|number_format(2, ',') }} €
+                            <span class="badge bg-success rounded-pill text-uppercase">payée</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="h6">Adresse de livraison</h3>
+                        <address>
+                            <strong>{{ order.shippingName }}</strong><br>
+                            {{ order.address.street }}<br>
+                            {{ order.address.zip }} {{ order.address.city }}<br>
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

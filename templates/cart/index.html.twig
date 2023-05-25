@@ -4,84 +4,84 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		{{ include('partials/_hero.html.twig') }}
+<div class="container">
+    {{ include('partials/_hero.html.twig') }}
 
-        {{ include('partials/_flash_messages.html.twig') }}
+    {{ include('partials/_flash_messages.html.twig') }}
 
-        <div class="container mt-4">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col">
-                    <p class="h2">Mon Panier</p>
+    <div class="container mt-4">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <p class="h2">Mon Panier</p>
 
-                    {% if cart|length == 0 %}
+                {% if cart|length == 0 %}
 
-                    <p>Votre panier est vide !</p>
+                <p>Votre panier est vide !</p>
 
-                    {% else %}
-                        {% for item in cart %}
-                            <div class="card mb-4">
-                                <div class="card-body p-4">
+                {% else %}
+                    {% for item in cart %}
+                        <div class="card mb-4">
+                            <div class="card-body p-4">
 
-                                    <div class="row align-items-center text-center text-md-start">
-                                        <div class="col-md-2 mb-3 mb-md-0">
-                                            <img src="{{ asset('images/products/' ~ item.product.image) }}" alt="Photo d'un {{ item.product.name|capitalize }}" class="img-fluid" focusable="false">
-                                        </div>
-                                        <div class="col-md-3 d-flex justify-content-center justify-content-md-start mb-4 mb-md-0">
-                                            <div>
-                                                <p class="small text-muted m-0 mb-md-4 pb-2">Nom</p>
-                                                <a href="{{ path('app_product_detail', {'name': item.product.name}) }}" class="lead fw-normal link-success text-decoration-none mb-0">
-                                                    {{ item.product.name|capitalize }}
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
-                                            <div>
-                                                <p class="small text-muted m-0 mb-md-4 pb-2">Quantité</p>
-                                                <p class="lead fw-normal mb-0">{{ item.quantity }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
-                                            <div>
-                                                <p class="small text-muted m-0 mb-md-4 pb-2">Prix unitaire</p>
-                                                <p class="lead fw-normal mb-0">{{ item.product.price|number_format(2, ',') }} €</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
-                                            <div>
-                                                <p class="small text-muted m-0 mb-md-4 pb-2">Total</p>
-                                                <p class="lead fw-normal mb-0">{{ (item.product.price * item.quantity)|number_format(2, ',') }} €</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1 d-flex justify-content-center">
-                                            <a href="{{ path('app_cart_remove', {'id': item.product.id}) }}">
-                                                <img src="{{ asset('images/website/trash.svg') }}" alt="Icône de poubelle" width="30" height="30">
+                                <div class="row align-items-center text-center text-md-start">
+                                    <div class="col-md-2 mb-3 mb-md-0">
+                                        <img src="{{ asset('images/products/' ~ item.product.image) }}" alt="Photo d'un {{ item.product.name|capitalize }}" class="img-fluid" focusable="false">
+                                    </div>
+                                    <div class="col-md-3 d-flex justify-content-center justify-content-md-start mb-4 mb-md-0">
+                                        <div>
+                                            <p class="small text-muted m-0 mb-md-4 pb-2">Nom</p>
+                                            <a href="{{ path('app_product_detail', {'name': item.product.name}) }}" class="lead fw-normal link-success text-decoration-none mb-0">
+                                                {{ item.product.name|capitalize }}
                                             </a>
                                         </div>
                                     </div>
-
+                                    <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
+                                        <div>
+                                            <p class="small text-muted m-0 mb-md-4 pb-2">Quantité</p>
+                                            <p class="lead fw-normal mb-0">{{ item.quantity }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
+                                        <div>
+                                            <p class="small text-muted m-0 mb-md-4 pb-2">Prix unitaire</p>
+                                            <p class="lead fw-normal mb-0">{{ item.product.price|number_format(2, ',') }} €</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center mb-4 mb-md-0">
+                                        <div>
+                                            <p class="small text-muted m-0 mb-md-4 pb-2">Total</p>
+                                            <p class="lead fw-normal mb-0">{{ (item.product.price * item.quantity)|number_format(2, ',') }} €</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 d-flex justify-content-center">
+                                        <a href="{{ path('app_cart_remove', {'id': item.product.id}) }}">
+                                            <img src="{{ asset('images/website/trash.svg') }}" alt="Icône de poubelle" width="30" height="30">
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    
-                    <div class="card mb-5">
-                        <div class="card-body p-4">
-                            <div class="float-end">
-                                <p class="mb-0 me-5 d-flex align-items-center">
-                                    <span class="small text-muted me-2">Total :</span>
-                                    <span class="lead fw-normal">{{ total|number_format(2, ',') }} €</span>
-                                </p>
+
                             </div>
                         </div>
+                    {% endfor %}
+                
+                <div class="card mb-5">
+                    <div class="card-body p-4">
+                        <div class="float-end">
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Total :</span>
+                                <span class="lead fw-normal">{{ total|number_format(2, ',') }} €</span>
+                            </p>
+                        </div>
                     </div>
-
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-success btn-lg">Commander</button>
-                    </div>
-
-                {% endif %}
                 </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{{ path('app_order_cart') }}" type="button" class="btn btn-success btn-lg">Commander</a>
+                </div>
+
+            {% endif %}
             </div>
         </div>
-	</div>
+    </div>
+</div>
 {% endblock %}

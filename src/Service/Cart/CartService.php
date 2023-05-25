@@ -78,4 +78,10 @@ class CartService {
 
         return $totalItems;
     }
+
+    public function emptyCart()
+    {
+        $cart = [];
+        $this->session->set('cart', $cart);
+    }
 }

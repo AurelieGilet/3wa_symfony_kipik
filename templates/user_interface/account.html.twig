@@ -13,14 +13,20 @@
             <p class="h5">Adresse email</p>
             <div class="d-flex justify-content-between">
                 <p>{{app.user.email}}</p>
-                <a href="">Modifier</a>
+                <span data-bs-toggle="modal" data-bs-target="" role="button" 
+                    class="link-success text-decoration-underline">
+                    Modifier
+                </span>
             </div>
         </div>
         <div class="border-bottom mt-3">
             <p class="h5">Mot de passe</p>
             <div class="d-flex justify-content-between">
                 <p>***********</p>
-                <a href="">Modifier</a>
+                <span data-bs-toggle="modal" data-bs-target="" role="button" 
+                    class="link-success text-decoration-underline">
+                    Modifier
+                </span>
             </div>
         </div>
 
@@ -31,7 +37,10 @@
                 <div>
                     <p>{{app.user.alias}}</p>
                 </div>
-                <a href="">Modifier</a>
+                <span data-bs-toggle="modal" data-bs-target="" role="button" 
+                    class="link-success text-decoration-underline">
+                    Modifier
+                </span>
             </div>
         </div>
 
@@ -42,7 +51,10 @@
                 <div>
                     <p>{{app.user.firstname|capitalize}} {{app.user.lastname|capitalize}}</p>
                 </div>
-                <a href="">Modifier</a>
+                <span data-bs-toggle="modal" data-bs-target="" role="button" 
+                    class="link-success text-decoration-underline">
+                    Modifier
+                </span>
             </div>
         </div>
         <div class="border-bottom mt-3">
@@ -53,16 +65,20 @@
                     <span>{{app.user.address.zip}}</span>
                     <span>{{app.user.address.city}}</span>
                 </div>
-                <a href="" class="align-self-end">Modifier</a>
+                <span data-bs-toggle="modal" data-bs-target="" role="button" 
+                    class="link-success text-decoration-underline align-self-end">
+                    Modifier
+                </span>
             </div>
         </div>
         <div class="border-bottom mt-3">
-            <p class="h5">Portemonaie</p>
+            <p class="h5">Porte-monaie</p>
             <div class="d-flex justify-content-between">
                 <div>
                     <p>Solde : {{app.user.wallet.amount}} €</p>
                 </div>
-                <span data-bs-toggle="modal" data-bs-target="#walletFormModal"  class="link-success text-decoration-underline" role='button' >
+                <span data-bs-toggle="modal" data-bs-target="#walletFormModal" role="button"
+                    class="link-success text-decoration-underline">
                     Créditer
                 </span>
             </div>

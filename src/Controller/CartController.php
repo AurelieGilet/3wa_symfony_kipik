@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Repository\UserRepository;
 use App\Service\Cart\CartService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,28 +20,14 @@ class CartController extends AbstractController
     }
 
     #[Route('/panier/ajouter/{id}', name: 'app_cart_add')]
-    public function addToCart(Product $product, CartService $cartService, UserRepository $userRepository)
+    public function addToCart(Product $product, CartService $cartService)
     {
-        // TODO : Move those checks to the OrderController (when done)
-        // Make sure user is authenticated
-        $user = $this->getUser();
-
-        if (!$user) {
-            $this->addFlash('error', "Vous devez vous inscrire afin de passer commande");
-
-            return $this->redirectToRoute('app_register');
-        }
-
-        // Make sure user is a client
-        $userType = $userRepository->getUserType($this->getUser());
-
-        if ($userType[0]['type'] === 'admin') {
-            $this->addFlash('error', "Un compte administrateur ne peux pas passer de commande");
+        if ($product->getStock() < 1) {
+            $this->addFlash('error', "Ce produit n'a pas un stock suffisant pour être ajouté à votre panier");
 
             return $this->redirectToRoute('app_product_detail', ['name' => $product->getName() ]);
         }
-
-        // Add product to cart
+        
         $cartService->addToCart($product->getId());
         
         $this->addFlash('success', "Produit ajouté au panier !");

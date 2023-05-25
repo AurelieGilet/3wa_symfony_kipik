@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Wallet;
 use App\Form\WalletFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +22,7 @@ class UserInterfaceController extends AbstractController
         $this->em = $em;
     }
     
-    #[Route('/utilisateur/compte', name: 'app_user_interface')]
+    #[Route('/utilisateur/compte', name: 'app_user_account')]
     public function account(UserRepository $userRepository): Response
     {
         $userType = $userRepository->getUserType($this->getUser());
@@ -32,6 +31,16 @@ class UserInterfaceController extends AbstractController
 
         return $this->render('user_interface/account.html.twig', [
             'userType' => $userType,
+        ]);
+    }
+
+    #[Route('/utilisateur/commandes', name: 'app_user_orders')]
+    public function orders(): Response
+    {
+        $orders = $this->getUser()->getOrders();
+
+        return $this->render('user_interface/orders.html.twig', [
+            'orders' => $orders,
         ]);
     }
 
@@ -56,7 +65,7 @@ class UserInterfaceController extends AbstractController
 
                 $this->addFlash('success', "Le portefeuille a bien été crédité");
 
-                return $this->redirectToRoute('app_user_interface');
+                return $this->redirectToRoute('app_user_account');
             }
         }
 

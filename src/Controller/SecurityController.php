@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Client;
 use App\Entity\Wallet;
 use App\Form\RegistrationFormType;
@@ -84,7 +83,7 @@ class SecurityController extends AbstractController
 
             $this->addFlash('success', "Votre inscription a bien été finalisée");
 
-            return $this->redirectToRoute('app_user_interface');
+            return $this->redirectToRoute('app_user_account');
         }
 
         return $this->render('security/client_register.html.twig', [
