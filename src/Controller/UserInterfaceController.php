@@ -40,24 +40,24 @@ class UserInterfaceController extends AbstractController
     {
         $wallet = $this->getUser()->getWallet();
 
-        dump($wallet);
-
-        $form = $this->createForm(WalletFormType::class, $wallet);
+        $form = $this->createForm(WalletFormType::class, $wallet, [
+            'action' => $this->generateUrl('app_wallet_credit'),
+        ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $amountToCredit = $form['amountToCredit']->getData();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $amountToCredit = $form['amountToCredit']->getData();
 
-            dd($amountToCredit);
+                $wallet->setAmount($wallet->getAmount() + $amountToCredit);
 
-            $wallet->setAmount($wallet->getAmount() + $amountToCredit);
+                $this->em->persist($wallet);
+                $this->em->flush();
 
-            $this->em->persist($wallet);
-            $this->em->flush();
+                $this->addFlash('success', "Le portefeuille a bien été crédité");
 
-            $this->addFlash('success', "Le portefeuille a bien été crédité");
-
-            return $this->redirectToRoute('app_user_interface');
+                return $this->redirectToRoute('app_user_interface');
+            }
         }
 
         return $this->render('user_interface/_wallet_form.html.twig', [
