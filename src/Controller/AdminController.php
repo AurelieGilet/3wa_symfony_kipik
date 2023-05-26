@@ -2,16 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\Category;
+use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
 use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class AdminController extends AbstractController
 {
@@ -45,7 +49,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/categorie/ajouter', name: 'app_admin_category_add')]
+    #[Route('/admin/categories/ajouter', name: 'app_admin_category_add')]
     public function adminCategoryAdd(Request $request): Response
     {
         $category = new Category();
@@ -72,7 +76,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/categorie/modifier/{id}', name: 'app_admin_category_edit')]
+    #[Route('/admin/categories/modifier/{id}', name: 'app_admin_category_edit')]
     public function adminCategoryEdit(Request $request, Category $category): Response
     {
         $form = $this->createForm(CategoryFormType::class, $category, [
@@ -97,10 +101,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/categorie/supprimer/{id}', name: 'app_admin_category_delete')]
-    public function adminCategoryDelete(Request $request, Category $category): Response
+    #[Route('/admin/categories/supprimer/{id}', name: 'app_admin_category_delete')]
+    public function adminCategoryDelete(Category $category): Response
     {
-        dump($category->getProducts());
         if (count($category->getProducts()) > 0) {
             $this->addFlash('error', "Vous ne pouvez pas supprimer cette catégorie car elle est associée à 1 ou plusieurs produits");
 
@@ -124,5 +127,120 @@ class AdminController extends AbstractController
         return $this->render('admin/admin_products.html.twig', [
             'products' => $products,
         ]);
+    }
+
+    #[Route('/admin/produits/ajouter', name: 'app_admin_product_add')]
+    public function adminProductAdd(Request $request): Response
+    {
+        $product = new Product();
+
+        $form = $this->createForm(ProductFormType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('image')->getData();
+
+            if ($file) {
+                $productName = $form->getData()->getName();
+                $fileName = preg_replace('/\s+/', '_', $productName) . '.' . $file->guessExtension();
+
+                try {
+                    $file->move(
+                        $this->getParameter('products_images_directory'),
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', "Un problème est survenu avec l'upload de l'image");
+
+                    return $this->redirectToRoute('app_admin_product_add');                
+                }
+
+                $product->setImage($fileName);
+            }
+
+            $this->em->persist($product);
+            $this->em->flush();
+
+            $this->addFlash('success', "Le produit a bien été ajouté");
+
+            return $this->redirectToRoute('app_admin_products');
+        }
+
+        return $this->render('admin/admin_product_form.html.twig', [
+            'form' => $form,
+            'action' => 'Ajouter',
+        ]);
+    }
+
+    #[Route('/admin/produits/modifier/{id}', name: 'app_admin_product_edit')]
+    public function adminProductEdit(Request $request, Product $product): Response
+    {
+        $form = $this->createForm(ProductFormType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $productName = $form->getData()->getName();
+
+            $oldFile = $product->getImage();
+
+            $file = $form->get('image')->getData();
+
+            if ($file) {
+                $filesystem = new Filesystem();
+                $filesystem->remove($this->getParameter('products_images_directory') . '/' . $oldFile);
+
+                $fileName = preg_replace('/\s+/', '_', strtolower($productName)) . '.' . $file->guessExtension();
+
+                try {
+                    $file->move(
+                        $this->getParameter('products_images_directory'),
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', "Un problème est survenu avec l'upload de l'image");
+
+                    return $this->redirectToRoute('app_admin_product_add');                
+                }
+
+                $product->setImage($fileName);
+            } else {
+                $pathParts = pathinfo($oldFile);
+                $fileExtension = $pathParts['extension'];
+                $newName = preg_replace('/\s+/', '_', strtolower($productName)) . '.' . $fileExtension;
+
+                rename(
+                    $this->getParameter('products_images_directory') . '/' .$oldFile, 
+                    $this->getParameter('products_images_directory') . '/' .$newName
+                );
+                
+                $product->setImage($newName);
+            }
+            
+            $this->em->persist($product);
+            $this->em->flush();
+
+            $this->addFlash('success', "Le produit a bien été modifié");
+
+            return $this->redirectToRoute('app_admin_products');
+        }
+
+        return $this->render('admin/admin_product_form.html.twig', [
+            'form' => $form,
+            'action' => 'Modifier',
+        ]);
+    }
+
+    #[Route('/admin/produits/supprimer/{id}', name: 'app_admin_product_delete')]
+    public function adminProductDelete(Product $product): Response
+    {
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->getParameter('products_images_directory') . '/' . $product->getImage());
+        $this->em->remove($product);
+
+        $this->em->flush();
+
+        $this->addFlash('success', "Le produit a bien été supprimé");
+
+        return $this->redirectToRoute('app_admin_products');
     }
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{action}} un produit{% endblock %}
+
+{% block body %}
+	<main class="custom-form product-form w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal text-center">{{ action }} un produit</h1>
+
+        {{ include('partials/_flash_messages.html.twig') }}
+        
+		{{ form_start(form) }}
+            <div class="form-floating">
+                {{ form_widget(form.category) }}
+                {{ form_label(form.category) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.name) }}
+                {{ form_label(form.name) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.description) }}
+                {{ form_label(form.description) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.price) }}
+                {{ form_label(form.price) }}
+            </div>
+            <div class="form-floating">
+                {{ form_widget(form.stock) }}
+                {{ form_label(form.stock) }}
+            </div>
+            <div class="my-3">
+                {{ form_label(form.image) }}                                
+                {{ form_widget(form.image) }}
+            </div>
+                {{ form_row(form.submit) }}
+                {{ form_row(form._token) }}
+		{{ form_end(form) }}
+	</main>
+{% endblock %}
