@@ -13,7 +13,10 @@ class HomeController extends AbstractController
 {
 
     #[Route('/', name: 'app_home')]
-    public function index(CategoryRepository $categoryRepository, ProductRepository $productRepository): Response
+    public function index(
+        CategoryRepository $categoryRepository, 
+        ProductRepository $productRepository
+    ): Response
     {
         $categories = $categoryRepository->findAll();
 

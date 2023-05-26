@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\Address;
 use App\Entity\OrderDetail;
-use App\Repository\ProductRepository;
 use App\Service\Cart\CartService;
 use App\Repository\UserRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -25,7 +26,11 @@ class OrderController extends AbstractController
     }
 
     #[Route('/panier/commander', name: 'app_order_cart')]
-    public function orderCart(UserRepository $userRepository, CartService $cartService, ProductRepository $productRepository)
+    public function orderCart(
+        UserRepository $userRepository, 
+        CartService $cartService, 
+        ProductRepository $productRepository
+    ): Response
     {
         // Make sure user is authenticated
         $user = $this->getUser();
@@ -45,12 +50,22 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
 
+        // Make sure client is fully setIsFullyRegistered
+        if ($user->isIsFullyRegistered() === false) {
+            $this->addFlash('error', "Vous devez finaliser votre inscription avant de passer de commande");
+
+            return $this->redirectToRoute('app_client_register');
+        }
+
         // Make sure client has enough credit to pay
         $total = $cartService->getCartTotalAmount();
         $wallet = $user->getWallet();
 
         if ($wallet->getAmount() < $total) {
-            $this->addFlash('error', "Vous n'avez pas assez d'argent sur votre porte-monnaie pour commander, merci d'ajouter du crédit");
+            $this->addFlash(
+                'error', 
+                "Vous n'avez pas assez d'argent sur votre porte-monnaie pour commander, merci d'ajouter du crédit"
+            );
 
             return $this->redirectToRoute('app_user_account');
         }
@@ -98,7 +113,8 @@ class OrderController extends AbstractController
             if ($product->getStock() < $item['quantity']) {
                 $this->addFlash(
                     'error', 
-                    "Le stock actuel du produit $product->getName() ne permet pas de passer commande. Veuillez modifier la quantité ($product->getStock() exemplaires restants)"
+                    "Le stock actuel du produit $product->getName() ne permet pas de passer commande. 
+                    Veuillez modifier la quantité ($product->getStock() exemplaires restants)"
                 );
 
                 return $this->redirectToRoute('app_cart');

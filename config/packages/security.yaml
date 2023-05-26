@@ -42,6 +42,7 @@ security:
 
 when@test:
     security:
+        access_denied_url: /connexion
         password_hashers:
             # By default, password hashers are resource intensive and take time. This is
             # important to generate secure password hashes. In tests however, secure hashes

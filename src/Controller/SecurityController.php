@@ -27,7 +27,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/inscription', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function register(
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher
+    ): Response
     {
         $client = new Client();
         $wallet = new Wallet();
@@ -69,6 +72,14 @@ class SecurityController extends AbstractController
     #[Route('/utilisateur/enregistrement', name: 'app_client_register')]
     public function clientRegister(Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->getUser()->getRoles()[0] === 'ROLE_ADMIN') {
+            return $this->redirectToRoute('app_home');
+        }
+
         $client = $this->getUser();
 
         $form = $this->createForm(ClientRegistrationFormType::class, $client);
@@ -99,6 +110,10 @@ class SecurityController extends AbstractController
     #[Route('/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
 
         if ($error) {

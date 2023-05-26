@@ -25,6 +25,10 @@ class UserInterfaceController extends AbstractController
     #[Route('/utilisateur/compte', name: 'app_user_account')]
     public function account(UserRepository $userRepository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $userType = $userRepository->getUserType($this->getUser());
 
         $userType = $userType[0]['type'];
@@ -37,6 +41,14 @@ class UserInterfaceController extends AbstractController
     #[Route('/utilisateur/commandes', name: 'app_user_orders')]
     public function orders(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->getUser()->getRoles()[0] === 'ROLE_ADMIN') {
+            return $this->redirectToRoute('app_home');
+        }
+
         $orders = $this->getUser()->getOrders();
 
         return $this->render('user_interface/orders.html.twig', [
@@ -47,6 +59,14 @@ class UserInterfaceController extends AbstractController
     #[Route('/utilisateur/portemonaie/crediter', name: 'app_wallet_credit')]
     public function addCredit(Request $request)
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        
+        if ($this->getUser()->getRoles()[0] === 'ROLE_ADMIN') {
+            return $this->redirectToRoute('app_home');
+        }
+
         $wallet = $this->getUser()->getWallet();
 
         $form = $this->createForm(WalletFormType::class, $wallet, [
