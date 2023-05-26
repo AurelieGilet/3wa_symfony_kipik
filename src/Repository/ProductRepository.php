@@ -53,6 +53,28 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Product[]
+     */
+    public function findProductBySearch($criteria)
+    {
+        $query = $this->createQueryBuilder('product');
+
+        if (!empty($criteria)) {
+            for ($i = 0; $i < count($criteria); $i++) {
+                $query = $query
+                        ->orWhere('product.name LIKE :word'.$i)
+                        ->setParameter('word'.$i , "%" . $criteria[$i] . "%");
+            }
+        }
+
+        $query = $query->orderBy('product.id', 'ASC');
+
+        $query = $query->getQuery();
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

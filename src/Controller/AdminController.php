@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Form\ProductFormType;
 use App\Form\CategoryFormType;
 use App\Repository\UserRepository;
+use App\Form\ProductSearchFormType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -120,12 +121,22 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/produits', name: 'app_admin_products')]
-    public function adminProducts(ProductRepository $productRepository): Response
+    public function adminProducts(Request $request, ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
 
+        $form = $this->createForm(ProductSearchFormType::class);
+
+        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+            $criteria = $form->getData();
+            $criteria = explode(" ", $criteria['search']);
+
+            $products = $productRepository->findProductBySearch($criteria);
+        }
+
         return $this->render('admin/admin_products.html.twig', [
             'products' => $products,
+            'form' => $form
         ]);
     }
 
