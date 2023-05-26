@@ -75,7 +75,7 @@
             <p class="h5">Porte-monaie</p>
             <div class="d-flex justify-content-between">
                 <div>
-                    <p>Solde : {{app.user.wallet.amount}} €</p>
+                    <p>Solde : {{app.user.wallet.amount|number_format(2, ',')}} €</p>
                 </div>
                 <span data-bs-toggle="modal" data-bs-target="#walletFormModal" role="button"
                     class="link-success text-decoration-underline">
@@ -85,17 +85,19 @@
         </div>
 
         {% elseif (userType is same as('client')) and (not app.user.isFullyRegistered) %}
-            <div class="my-5 mx-auto">
-                <p>Pour pouvoir passer commande, vous devez compléter votre inscription.</p>
-                <p>Merci de remplir ce <a href="{{ path('app_client_register') }}">formulaire</a>.</p>
-            </div>
+        <div class="my-5 mx-auto">
+            <p>Pour pouvoir passer commande, vous devez compléter votre inscription.</p>
+            <p>Merci de remplir ce <a href="{{ path('app_client_register') }}">formulaire</a>.</p>
+        </div>
         {% endif %}
     </div>
     
+    {% if (userType is same as('client')) and (app.user.isFullyRegistered) %}
     <div id="walletFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
         {{ render(controller(
             'App\\Controller\\UserInterfaceController::addCredit'
         ))}}
     </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -8,35 +8,65 @@
 			</a>
 		</div>
 		<div class="d-flex align-items-center gap-3">
-			{% if is_granted("ROLE_USER") %}
-				<div class="dropdown">
-					<button  data-bs-toggle="dropdown" aria-expanded="false" 
-					class="btn btn-success dropdown-toggle">
-						<img src="{{ asset('images/website/account.svg') }}" width="30" height="30" alt="Icône compte utilisateur" class="align-middle d-inline d-sm-none">
-						<span class="d-none d-sm-inline">Compte</span>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li>
-							<a class="dropdown-item" href="{{ path('app_user_account') }}">Mes infos</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="{{ path('app_user_orders') }}">Mes commandes</a>
-						</li>
-						<li>
-							<a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
-						</li>
-					</ul>
-				</div>
+			{% if is_granted("ROLE_ADMIN")%}
+			<div class="dropdown">
+				<button  data-bs-toggle="dropdown" aria-expanded="false" 
+				class="btn btn-success dropdown-toggle">
+					<img src="{{ asset('images/website/account.svg') }}" width="30" height="30" alt="Icône compte utilisateur" class="align-middle d-inline d-sm-none">
+					<span class="d-none d-sm-inline">Espace Admin</span>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" href="{{ path('app_user_account') }}">Mon compte</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="{{ path('app_admin_users') }}">Gestion utilisateurs</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="">Gestion des commandes</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="{{ path('app_admin_categories') }}">Gestion des catégories</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="{{ path('app_admin_products') }}">Gestion des produits</a>
+					</li>
+					<li>
+						<a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+					</li>
+				</ul>
+			</div>
+			{% elseif is_granted("ROLE_USER") %}
+			<div class="dropdown">
+				<button  data-bs-toggle="dropdown" aria-expanded="false" 
+				class="btn btn-success dropdown-toggle">
+					<img src="{{ asset('images/website/account.svg') }}" width="30" height="30" alt="Icône compte utilisateur" class="align-middle d-inline d-sm-none">
+					<span class="d-none d-sm-inline">Compte</span>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" href="{{ path('app_user_account') }}">Mes infos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="{{ path('app_user_orders') }}">Mes commandes</a>
+					</li>
+					<li>
+						<a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+					</li>
+				</ul>
+			</div>
 			{% else %}
 			<div class="d-flex gap-2">
 				<a href="{{ path('app_login') }}" class="btn btn-outline-success">Connexion</a>
 				<a href="{{ path('app_register') }}" class="btn btn-success">Inscription</a>
 			</div>
 			{% endif %}
+			{% if not is_granted("ROLE_ADMIN") %}
 			<a href="{{ path('app_cart') }}" class="cart btn btn-outline-success">
 				<img src="{{ asset('images/website/cart.svg') }}" width="30" height="30" alt="Dessin d'un cactus" class="align-middle">
 				<span class="cart__items align-middle fs-5">{{ cartService.getCartTotalItems }}</span>
 			</a>
+			{% endif %}
 		</div>
 	</header>
 </div>

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des catégores
+{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1 class="text-center my-4">Gestion des catégories</h1>
+
+	<button data-bs-toggle="modal" data-bs-target="#addCategoryFormModal" type="button"
+		class="btn btn-outline-success my-4">
+		Ajouter une catégorie
+	</button>
+
+	{{ include('partials/_flash_messages.html.twig') }}
+
+	<div class="container table-container mt-4">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Nb de produits</th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for category in categories %}
+						<tr>
+							<th scope="row">{{ category.id }}</th>
+							<td>{{ category.name }}</td>
+							<td>{{ category.products|length }}</td>
+							<td>
+								<span data-bs-toggle="modal" data-bs-target="#editCategoryFormModal{{category.id}}" role="button"
+									class="link-success text-decoration-underline">
+									<img src="{{ asset('images/website/edit.svg') }}" alt="Icône de crayon"
+									width="30" height="30" class="align-middle d-inline">
+								</span>
+							</td>
+							<td>
+								<a href="{{ path('app_admin_category_delete', {'id': category.id}) }}">
+									<img src="{{ asset('images/website/delete.svg') }}" alt="Icône de poubelle"
+									width="30" height="30" class="align-middle d-inline">
+								</a>
+							</td>
+						</tr>
+						<div id="editCategoryFormModal{{category.id}}" class="modal fade" tabindex="-1" aria-hidden="true">
+							{{ render(controller(
+								'App\\Controller\\AdminController::adminCategoryEdit',
+								{ 'id': category.id }
+							))}}
+						</div>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div id="addCategoryFormModal" class="modal fade" tabindex="-1" aria-hidden="true">
+	{{ render(controller(
+		'App\\Controller\\AdminController::adminCategoryAdd'
+	))}}
+</div>
+{% endblock %}

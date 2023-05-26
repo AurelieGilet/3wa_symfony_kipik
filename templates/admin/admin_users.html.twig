@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="text-center my-4">Gestion des utilisateurs</h1>
+
+		{{ include('partials/_flash_messages.html.twig') }}
+
+		<div class="container table-container mt-4">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Email</th>
+							<th scope="col">Date de création</th>
+							<th scope="col">Role</th>
+							<th scope="col">Nom</th>
+							<th scope="col">Adresse</th>
+							<th scope="col">Porte-monaie</th>
+							<th scope="col">Nb commandes</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for user in users %}
+							<tr>
+								<th scope="row">{{ user.id }}</th>
+								<td>{{ user.email }}</td>
+								<td>{{ user.createdAt|date("d-m-Y") }}</td>
+								<td>
+									{% if "ROLE_ADMIN" in user.roles %}
+										Admin
+									{% elseif "ROLE_USER" in user.roles %}
+										Client
+									{% endif %}
+								</td>
+								<td>
+									{% if "ROLE_ADMIN" in user.roles %}
+										{{ user.alias }}
+									{% elseif "ROLE_USER" in user.roles %}
+										{{ user.firstname }}
+										{{ user.lastname }}
+									{% endif %}
+								</td>
+								<td>
+									{% if "ROLE_ADMIN" in user.roles %}
+										n/a
+									{% elseif "ROLE_USER" in user.roles %}
+										{{ user.address.street }}
+										<br>
+										{{ user.address.zip }}
+										{{ user.address.city }}
+									{% endif %}
+								</td>
+								<td>
+									{% if "ROLE_ADMIN" in user.roles %}
+										n/a
+									{% elseif "ROLE_USER" in user.roles %}
+										{{ user.wallet.amount|number_format(2, ',') }} €
+									{% endif %}
+								</td>
+								<td>
+									{% if "ROLE_ADMIN" in user.roles %}
+										n/a
+									{% elseif "ROLE_USER" in user.roles %}
+										{{ user.orders|length }}
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

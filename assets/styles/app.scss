@@ -92,3 +92,9 @@ img {
 .quantity {
     width: 120px;
 }
+
+@media screen and (max-width: 575px) {
+    .table-container {
+        max-width: 350px;
+    }
+}

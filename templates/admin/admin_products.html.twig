@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des produits
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="text-center my-4">Gestion des produits</h1>
+
+		{{ include('partials/_flash_messages.html.twig') }}
+
+		<div class="container table-container mt-4">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Catégorie</th>
+							<th scope="col">Nom du produit</th>
+							<th scope="col">Description</th>
+							<th scope="col">Photo</th>
+							<th scope="col">Prix (€)</th>
+							<th scope="col">Stock</th>
+							<th scope="col"></th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for product in products %}
+							<tr>
+								<th scope="row">{{ product.id }}</th>
+								<td>{{ product.category.name }}</td>
+								<td>{{ product.name }}</td>
+								<td>{{ product.description }}</td>
+								<td>
+                                    <img src="{{ asset('images/products/' ~ product.image) }}" 
+                                    alt="Photo d'un {{ product.name|capitalize }}" 
+                                    width="50" height="50"focusable="false">
+                                </td>
+								<td>{{ product.price|number_format(2, ',') }}</td>
+								<td>{{ product.stock }}</td>
+								<td>modifier</td>
+								<td>supprimer</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

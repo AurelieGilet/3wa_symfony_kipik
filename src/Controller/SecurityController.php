@@ -97,7 +97,7 @@ class SecurityController extends AbstractController
      * @return Response
      */
     #[Route('/connexion', name: 'app_login')]
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
